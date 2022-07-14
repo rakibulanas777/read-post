@@ -32,6 +32,23 @@ async function run() {
 			const post = await posts.findOne(query);
 			res.send(post);
 		});
+
+		//update post
+		app.put("/:id", async (req, res) => {
+			const id = req.params.id;
+			console.log(id);
+			const editPost = req.body;
+			console.log(editPost);
+			const filter = { _id: ObjectId(id) };
+			const options = { upsert: true };
+			const updateDoc = {
+				$set: {
+					body: editPost.bodyData,
+				},
+			};
+			const result = await posts.updateOne(filter, updateDoc, options);
+			res.send(result);
+		});
 	} finally {
 		//await client.close();
 	}
